@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Button } from "../ui/Button";
@@ -20,6 +21,18 @@ export const FiltersBar = ({
   onExpiryFilterChange,
   onAddClick,
 }: FiltersBarProps) => {
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      onSearchChange(searchValue);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue, onSearchChange]);
+
   return (
     <div className="flex flex-col xl:flex-row items-center justify-between gap-4 mb-4">
       <div className="flex items-center gap-3 w-full xl:w-auto overflow-x-auto p-1 -m-1">
@@ -66,7 +79,8 @@ export const FiltersBar = ({
           <Input
             icon={<Search className="h-4 w-4" />}
             placeholder="Search by tenant, properties, or unit..."
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
         <button className="shrink-0 text-gray-500 rounded-full border border-[#E7E9E9] p-1 cursor-pointer">

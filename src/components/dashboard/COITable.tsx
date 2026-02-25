@@ -174,7 +174,7 @@ export const COITable = ({
                       </span>
                     </td>
                     <td className="px-4 py-3 border border-gray-200 text-center">
-                      <button className="text-gray-400 hover:text-gray-700">
+                      <button className="text-gray-400 hover:text-gray-700 cursor-pointer">
                         <img src={threeDotIcon} alt="threeDotIcon" />
                       </button>
                     </td>
