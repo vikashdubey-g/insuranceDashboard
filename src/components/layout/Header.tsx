@@ -34,11 +34,11 @@ export const Header = () => {
 
         <div className="ml-4 flex items-center gap-3  pl-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-600">
-            S
+            V
           </div>
           <div className="hidden md:block">
-            <p className="text-sm font-medium text-gray-900">Shubham</p>
-            <p className="text-xs text-gray-500">shubham@gmail.com</p>
+            <p className="text-sm font-medium text-gray-900">Vikash</p>
+            <p className="text-xs text-gray-500">v.dubey2311@gmail.com</p>
           </div>
           <img src={greyDownArrow} alt="greyDownArrow" className="w-3 h-3" />
         </div>

@@ -12,6 +12,8 @@ function App() {
   const [data, setData] = useState<COIRecord[]>(mockCOIData);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<COIStatus | 'All'>('All');
+  const [propertyFilter, setPropertyFilter] = useState('all');
+  const [expiryFilter, setExpiryFilter] = useState('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,9 +39,17 @@ function App() {
       
       const matchesStatus = statusFilter === 'All' || record.status === statusFilter;
 
-      return matchesSearch && matchesStatus;
+      const matchesProperty = propertyFilter === 'all' || record.property.toLowerCase().includes(propertyFilter.toLowerCase());
+
+      let matchesExpiry = true;
+      if (expiryFilter !== 'all') {
+        const daysDiff = (new Date(record.expiryDate).getTime() - Date.now()) / (1000 * 3600 * 24);
+        matchesExpiry = daysDiff >= 0 && daysDiff <= parseInt(expiryFilter);
+      }
+
+      return matchesSearch && matchesStatus && matchesProperty && matchesExpiry;
     });
-  }, [data, searchQuery, statusFilter]);
+  }, [data, searchQuery, statusFilter, propertyFilter, expiryFilter]);
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
   const paginatedData = useMemo(() => {
@@ -109,6 +119,14 @@ function App() {
             <FiltersBar 
               onSearchChange={handleSearchChange}
               onStatusFilterChange={handleFilterChange}
+              onPropertyFilterChange={(prop) => {
+                setPropertyFilter(prop);
+                setCurrentPage(1);
+              }}
+              onExpiryFilterChange={(days) => {
+                setExpiryFilter(days);
+                setCurrentPage(1);
+              }}
               onAddClick={() => setIsAddModalOpen(true)}
             />
             

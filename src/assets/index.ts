@@ -20,6 +20,10 @@ import expiryIcon from "./dashboard/expiry.svg";
 
 // common
 import addIcon from "./common/addIcon.svg";
+import threeDotIcon from "./common/threeDotIcon.svg";
+import chevronLeft from "./common/chevronLeft.svg";
+import chevronRight from "./common/chevronRight.svg";
+import editPencilIcon from "./common/editPencilIcon.svg";
 
 export {
   legalgraphMainLogo,
@@ -37,4 +41,8 @@ export {
   acceptedIcon,
   rejectedIcon,
   expiryIcon,
+  threeDotIcon,
+  chevronLeft,
+  chevronRight,
+  editPencilIcon,
 };

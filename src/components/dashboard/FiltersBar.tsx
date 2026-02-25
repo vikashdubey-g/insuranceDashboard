@@ -8,19 +8,27 @@ import { addIcon, settingIcon } from "../../assets";
 interface FiltersBarProps {
   onSearchChange: (value: string) => void;
   onStatusFilterChange: (status: COIStatus | "All") => void;
+  onPropertyFilterChange?: (property: string) => void;
+  onExpiryFilterChange?: (days: string) => void;
   onAddClick: () => void;
 }
 
 export const FiltersBar = ({
   onSearchChange,
   onStatusFilterChange,
+  onPropertyFilterChange,
+  onExpiryFilterChange,
   onAddClick,
 }: FiltersBarProps) => {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
-      <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-1">
+    <div className="flex flex-col xl:flex-row items-center justify-between gap-4 mb-4">
+      <div className="flex items-center gap-3 w-full xl:w-auto overflow-x-auto p-1 -m-1">
         <div className="w-40 shrink-0">
-          <Select placeholder="All Properties">
+          <Select 
+            placeholder="All Properties"
+            onChange={(e) => onPropertyFilterChange?.(e.target.value)}
+            defaultValue="all"
+          >
             <option value="all">All Properties</option>
             <option value="maple">Maplewood...</option>
             <option value="oak">Oak Tree Tower</option>
@@ -41,7 +49,11 @@ export const FiltersBar = ({
           </Select>
         </div>
         <div className="w-40 shrink-0">
-          <Select placeholder="Filter by Expiry">
+          <Select 
+            placeholder="Filter by Expiry"
+            onChange={(e) => onExpiryFilterChange?.(e.target.value)}
+            defaultValue="all"
+          >
             <option value="all">Any Expiry</option>
             <option value="30">Next 30 Days</option>
             <option value="60">Next 60 Days</option>
@@ -49,8 +61,8 @@ export const FiltersBar = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 w-full sm:w-auto">
-        <div className="w-full sm:w-80">
+      <div className="flex items-center gap-3 w-full xl:w-auto">
+        <div className="w-full xl:w-80">
           <Input
             icon={<Search className="h-4 w-4" />}
             placeholder="Search by tenant, properties, or unit..."

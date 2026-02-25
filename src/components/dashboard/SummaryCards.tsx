@@ -58,12 +58,12 @@ export const SummaryCards = ({
           key={card.title}
           className={`${card.bg} rounded-xl p-5 flex flex-col gap-4 shadow-xs`}
         >
-          <h3 className="text-sm font-medium text-gray-700">{card.title}</h3>
+          <h3 className="text-md font-medium text-gray-700">{card.title}</h3>
 
           <div
             className={`${card.innerBg} rounded-lg px-4 py-3 flex items-center gap-3`}
           >
-            <img src={card.icon} alt={card.title} className="h-5 w-5" />
+            <img src={card.icon} alt={card.title} className="h-6 w-6" />
             <span className="text-2xl font-semibold text-gray-900">
               {values[card.valueKey as keyof typeof values]}
             </span>
