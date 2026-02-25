@@ -1,5 +1,9 @@
-import React from 'react';
-import { FileText, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import {
+  acceptedIcon,
+  coiProcessedIcon,
+  expiryIcon,
+  rejectedIcon,
+} from "../../assets";
 
 interface SummaryCardsProps {
   total: number;
@@ -8,44 +12,64 @@ interface SummaryCardsProps {
   expiring: number;
 }
 
-export const SummaryCards = ({ total, accepted, rejected, expiring }: SummaryCardsProps) => {
+const cards = [
+  {
+    title: "Total COI Processed",
+    valueKey: "total",
+    icon: coiProcessedIcon,
+    bg: "bg-[#EDF4FF]",
+    innerBg: "bg-[#FFFFFF]",
+  },
+  {
+    title: "Accepted",
+    valueKey: "accepted",
+    icon: acceptedIcon,
+    bg: "bg-[#E9FAF6]",
+    innerBg: "bg-[#FFFFFF]",
+  },
+  {
+    title: "Rejected",
+    valueKey: "rejected",
+    icon: rejectedIcon,
+    bg: "bg-[#FDF4F7]",
+    innerBg: "bg-[#FFFFFF]",
+  },
+  {
+    title: "Expiring in 30 days",
+    valueKey: "expiring",
+    icon: expiryIcon,
+    bg: "bg-[#FEEEEA]",
+    innerBg: "bg-[#FFFFFF]",
+  },
+];
+
+export const SummaryCards = ({
+  total,
+  accepted,
+  rejected,
+  expiring,
+}: SummaryCardsProps) => {
+  const values = { total, accepted, rejected, expiring };
+
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-      {/* Total COI Processed */}
-      <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-6 flex flex-col justify-between h-32">
-        <h3 className="text-sm font-medium text-gray-700">Total COI Processed</h3>
-        <div className="flex items-center gap-3">
-          <FileText className="h-6 w-6 text-blue-500" />
-          <span className="text-3xl font-bold text-gray-900">{total}</span>
-        </div>
-      </div>
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+      {cards.map((card) => (
+        <div
+          key={card.title}
+          className={`${card.bg} rounded-xl p-5 flex flex-col gap-4 shadow-xs`}
+        >
+          <h3 className="text-sm font-medium text-gray-700">{card.title}</h3>
 
-      {/* Accepted */}
-      <div className="rounded-xl border border-green-100 bg-green-50/50 p-6 flex flex-col justify-between h-32">
-        <h3 className="text-sm font-medium text-gray-700">Accepted</h3>
-        <div className="flex items-center gap-3">
-          <CheckCircle2 className="h-6 w-6 text-green-500" />
-          <span className="text-3xl font-bold text-gray-900">{accepted}</span>
+          <div
+            className={`${card.innerBg} rounded-lg px-4 py-3 flex items-center gap-3`}
+          >
+            <img src={card.icon} alt={card.title} className="h-5 w-5" />
+            <span className="text-2xl font-semibold text-gray-900">
+              {values[card.valueKey as keyof typeof values]}
+            </span>
+          </div>
         </div>
-      </div>
-
-      {/* Rejected */}
-      <div className="rounded-xl border border-red-100 bg-red-50/50 p-6 flex flex-col justify-between h-32">
-        <h3 className="text-sm font-medium text-gray-700">Rejected</h3>
-        <div className="flex items-center gap-3">
-          <XCircle className="h-6 w-6 text-red-400" />
-          <span className="text-3xl font-bold text-gray-900">{rejected}</span>
-        </div>
-      </div>
-
-      {/* Expiring in 30 days */}
-      <div className="rounded-xl border border-orange-100 bg-orange-50/50 p-6 flex flex-col justify-between h-32">
-        <h3 className="text-sm font-medium text-gray-700">Expiring in 30 days</h3>
-        <div className="flex items-center gap-3">
-          <Clock className="h-6 w-6 text-orange-400" />
-          <span className="text-3xl font-bold text-gray-900">{expiring}</span>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };

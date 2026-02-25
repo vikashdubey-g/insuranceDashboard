@@ -1,19 +1,28 @@
 import { cn } from "../../lib/utils";
-import { LayoutGrid, Folders, FileText, Settings } from "lucide-react";
-import { addIcon, circleChevronLeft, legalgraphMainLogo } from "../../assets";
+
+import {
+  addIcon,
+  circleChevronLeft,
+  legalgraphMainLogo,
+  contactVault,
+  coiDashboard,
+  analysisResult,
+  settingIcon,
+} from "../../assets";
+import { Button } from "../ui/Button";
 
 const navigation = [
-  { name: "Contract Vault", href: "#", icon: Folders, current: false },
-  { name: "COI Dashboard", href: "#", icon: FileText, current: true },
-  { name: "Analysis Results", href: "#", icon: LayoutGrid, current: false },
-  { name: "Setting", href: "#", icon: Settings, current: false },
+  { name: "Contract Vault", href: "#", icon: contactVault, current: false },
+  { name: "COI Dashboard", href: "#", icon: coiDashboard, current: true },
+  { name: "Analysis Results", href: "#", icon: analysisResult, current: false },
+  { name: "Setting", href: "#", icon: settingIcon, current: false },
 ];
 
 export const Sidebar = () => {
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-gray-50">
+    <div className="flex h-full w-64 flex-col bg-[#F3F4F4] border-r border-[#DCDEDE]">
       {/* App Logo Area */}
-      <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b">
+      <div className="flex h-16 shrink-0 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           {/* Mock Logo Icon */}
           <img src={legalgraphMainLogo} alt="legalgraphMainLogo" />
@@ -29,9 +38,9 @@ export const Sidebar = () => {
 
       {/* Review Button */}
       <div className="p-4">
-        <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-colors shadow-sm">
-          Review documents <img src={addIcon} alt="addIcon" />
-        </button>
+        <Button variant="primary" endIcon={addIcon} startEndIconClassName="w-3 h-3" >
+          Review documents
+        </Button>
       </div>
 
       {/* Navigation */}
@@ -47,7 +56,8 @@ export const Sidebar = () => {
               "group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
             )}
           >
-            <item.icon
+            <img src={item.icon} alt={item.name} />
+            {/* <item.icon
               className={cn(
                 item.current
                   ? "text-blue-600"
@@ -55,7 +65,7 @@ export const Sidebar = () => {
                 "h-5 w-5 shrink-0",
               )}
               aria-hidden="true"
-            />
+            /> */}
             {item.name}
           </a>
         ))}

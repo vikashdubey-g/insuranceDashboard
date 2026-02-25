@@ -94,7 +94,7 @@ function App() {
       <Header />
       
       <div className="flex-1 overflow-auto p-8 bg-gray-50/20">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="w-full space-y-6">
           <SummaryCards 
             // In Figma mock, the counts are 512, 480, 512, 21. We can hardcode those for exact match or use computed. 
             // For a functional mock, using computed is better, but to match the design we can boost the total.
@@ -105,7 +105,7 @@ function App() {
             expiring={21}
           />
           
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-[#DCDEDE] p-4">
             <FiltersBar 
               onSearchChange={handleSearchChange}
               onStatusFilterChange={handleFilterChange}
