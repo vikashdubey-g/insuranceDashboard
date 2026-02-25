@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --color-blue-50: #eff6ff;
@@ -12,5 +13,5 @@
 }
 
 body {
-  @apply bg-gray-50 font-sans text-gray-900 antialiased;
+  @apply bg-gray-50 font-sans text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100;
 }

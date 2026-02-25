@@ -17,29 +17,29 @@ const cards = [
     title: "Total COI Processed",
     valueKey: "total",
     icon: coiProcessedIcon,
-    bg: "bg-[#EDF4FF]",
-    innerBg: "bg-[#FFFFFF]",
+    bg: "bg-[#EDF4FF] dark:bg-blue-900/30",
+    innerBg: "bg-[#FFFFFF] dark:bg-blue-900/50",
   },
   {
     title: "Accepted",
     valueKey: "accepted",
     icon: acceptedIcon,
-    bg: "bg-[#E9FAF6]",
-    innerBg: "bg-[#FFFFFF]",
+    bg: "bg-[#E9FAF6] dark:bg-emerald-900/30",
+    innerBg: "bg-[#FFFFFF] dark:bg-emerald-900/50",
   },
   {
     title: "Rejected",
     valueKey: "rejected",
     icon: rejectedIcon,
-    bg: "bg-[#FDF4F7]",
-    innerBg: "bg-[#FFFFFF]",
+    bg: "bg-[#FDF4F7] dark:bg-rose-900/30",
+    innerBg: "bg-[#FFFFFF] dark:bg-rose-900/50",
   },
   {
     title: "Expiring in 30 days",
     valueKey: "expiring",
     icon: expiryIcon,
-    bg: "bg-[#FEEEEA]",
-    innerBg: "bg-[#FFFFFF]",
+    bg: "bg-[#FEEEEA] dark:bg-orange-900/30",
+    innerBg: "bg-[#FFFFFF] dark:bg-orange-900/50",
   },
 ];
 
@@ -58,13 +58,13 @@ export const SummaryCards = ({
           key={card.title}
           className={`${card.bg} rounded-xl p-5 flex flex-col gap-4 shadow-xs`}
         >
-          <h3 className="text-md font-medium text-gray-700">{card.title}</h3>
+          <h3 className="text-md font-medium text-gray-700 dark:text-gray-300">{card.title}</h3>
 
           <div
             className={`${card.innerBg} rounded-lg px-4 py-3 flex items-center gap-3`}
           >
             <img src={card.icon} alt={card.title} className="h-6 w-6" />
-            <span className="text-2xl font-semibold text-gray-900">
+            <span className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
               {values[card.valueKey as keyof typeof values]}
             </span>
           </div>

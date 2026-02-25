@@ -5,6 +5,7 @@ import { SummaryCards } from './components/dashboard/SummaryCards';
 import { FiltersBar } from './components/dashboard/FiltersBar';
 import { COITable } from './components/dashboard/COITable';
 import { AddCOIModal } from './components/dashboard/AddCOIModal';
+import { EditCOIModal } from './components/dashboard/EditCOIModal';
 import type { COIRecord, COIStatus } from './types';
 import { mockCOIData } from './data/mockData';
 
@@ -16,6 +17,8 @@ function App() {
   const [expiryFilter, setExpiryFilter] = useState('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<COIRecord | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -89,6 +92,19 @@ function App() {
     setData(prev => [newRecord, ...prev]);
   };
 
+  const handleEditClick = (record: COIRecord) => {
+    setEditingRecord(record);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditRecord = (updatedRecord: COIRecord) => {
+    setData(prev => prev.map(record => 
+      record.id === updatedRecord.id ? updatedRecord : record
+    ));
+    setIsEditModalOpen(false);
+    setEditingRecord(null);
+  };
+
   const handleFilterChange = (filter: COIStatus | 'All') => {
     setStatusFilter(filter);
     setCurrentPage(1); // Reset page on filter
@@ -103,19 +119,16 @@ function App() {
     <DashboardLayout>
       <Header />
       
-      <div className="flex-1 overflow-auto p-8 bg-gray-50/20">
+      <div className="flex-1 overflow-auto p-4 md:p-8 bg-gray-50/20 dark:bg-gray-900">
         <div className="w-full space-y-6">
           <SummaryCards 
-            // In Figma mock, the counts are 512, 480, 512, 21. We can hardcode those for exact match or use computed. 
-            // For a functional mock, using computed is better, but to match the design we can boost the total.
-            // Let's use computed but maybe bump the base mock values if exact text match is desired.
-            total={512} 
-            accepted={480} 
-            rejected={512} 
-            expiring={21}
+            total={stats.total} 
+            accepted={stats.accepted} 
+            rejected={stats.rejected} 
+            expiring={stats.expiring}
           />
           
-          <div className="bg-white rounded-2xl shadow-sm border border-[#DCDEDE] p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-[#DCDEDE] dark:border-gray-700 p-4">
             <FiltersBar 
               onSearchChange={handleSearchChange}
               onStatusFilterChange={handleFilterChange}
@@ -144,6 +157,7 @@ function App() {
                 setRowsPerPage(rows);
                 setCurrentPage(1);
               }}
+              onEditClick={handleEditClick}
             />
           </div>
         </div>
@@ -153,6 +167,16 @@ function App() {
         isOpen={isAddModalOpen} 
         onClose={() => setIsAddModalOpen(false)}
         onAdd={handleAddRecord}
+      />
+
+      <EditCOIModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingRecord(null);
+        }}
+        onEdit={handleEditRecord}
+        initialData={editingRecord}
       />
     </DashboardLayout>
   );

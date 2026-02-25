@@ -25,7 +25,7 @@ export const Sidebar = () => {
   return (
     <div
       className={cn(
-        "flex h-full flex-col bg-[#F3F4F4] border-r border-[#DCDEDE] transition-all duration-300",
+        "flex h-full flex-col bg-[#F3F4F4] dark:bg-gray-800 border-r border-[#DCDEDE] dark:border-gray-700 transition-all duration-300",
         isCollapsed ? "w-20" : "w-64"
       )}
     >
@@ -37,7 +37,7 @@ export const Sidebar = () => {
 
           <span
             className={cn(
-              "text-lg font-semibold bg-linear-to-r from-[#2C8ED5] to-[#1762AA] bg-clip-text text-transparent transition-opacity duration-300 whitespace-nowrap",
+              "text-lg font-semibold bg-linear-to-r from-[#2C8ED5] to-[#1762AA] dark:from-blue-400 dark:to-blue-200 bg-clip-text text-transparent transition-opacity duration-300 whitespace-nowrap",
               isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
             )}
           >
@@ -52,7 +52,7 @@ export const Sidebar = () => {
             src={circleChevronLeft}
             alt="circleChevronLeft"
             className={cn(
-              "transition-transform duration-300",
+              "transition-transform duration-300 dark:invert opacity-70",
               isCollapsed && "rotate-180"
             )}
           />
@@ -87,14 +87,14 @@ export const Sidebar = () => {
             href={item.href}
             className={cn(
               item.current
-                ? "bg-blue-50 text-blue-600 font-medium"
-                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                ? "bg-blue-50 text-blue-600 font-medium dark:bg-blue-900/40 dark:text-blue-300"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100",
               "group flex items-center rounded-md px-3 py-2 text-sm transition-colors",
               isCollapsed ? "justify-center" : "gap-3"
             )}
             title={isCollapsed ? item.name : undefined}
           >
-            <img src={item.icon} alt={item.name} className="shrink-0" />
+            <img src={item.icon} alt={item.name} className="shrink-0 dark:invert dark:opacity-80" />
             <span
               className={cn(
                 "transition-opacity duration-300 whitespace-nowrap",

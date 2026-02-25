@@ -35,8 +35,8 @@ export const FiltersBar = ({
 
   return (
     <div className="flex flex-col xl:flex-row items-center justify-between gap-4 mb-4">
-      <div className="flex items-center gap-3 w-full xl:w-auto overflow-x-auto p-1 -m-1">
-        <div className="w-40 shrink-0">
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto p-1 -m-1">
+        <div className="w-full sm:w-40 shrink-0">
           <Select 
             placeholder="All Properties"
             onChange={(e) => onPropertyFilterChange?.(e.target.value)}
@@ -47,7 +47,7 @@ export const FiltersBar = ({
             <option value="oak">Oak Tree Tower</option>
           </Select>
         </div>
-        <div className="w-36 shrink-0">
+        <div className="w-full sm:w-36 shrink-0">
           <Select
             placeholder="Status"
             onChange={(e) => onStatusFilterChange(e.target.value as any)}
@@ -61,7 +61,7 @@ export const FiltersBar = ({
             <option value="Not Processed">Not Processed</option>
           </Select>
         </div>
-        <div className="w-40 shrink-0">
+        <div className="w-full sm:w-40 shrink-0">
           <Select 
             placeholder="Filter by Expiry"
             onChange={(e) => onExpiryFilterChange?.(e.target.value)}
@@ -74,7 +74,7 @@ export const FiltersBar = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 w-full xl:w-auto">
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto">
         <div className="w-full xl:w-80">
           <Input
             icon={<Search className="h-4 w-4" />}
@@ -83,12 +83,14 @@ export const FiltersBar = ({
             onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
-        <button className="shrink-0 text-gray-500 rounded-full border border-[#E7E9E9] p-1 cursor-pointer">
-          <img src={settingIcon} alt="settingIcon" />
-        </button>
-        <Button onClick={onAddClick} variant="primary" startIcon={addIcon} startEndIconClassName="w-3 h-3" >
-          ADD COI{" "}
-        </Button>
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          <button className="shrink-0 text-gray-500 rounded-full border border-[#E7E9E9] p-1 cursor-pointer">
+            <img src={settingIcon} alt="settingIcon" />
+          </button>
+          <Button onClick={onAddClick} variant="primary" startIcon={addIcon} startEndIconClassName="w-3 h-3" className="w-full sm:w-auto justify-center" >
+            ADD COI{" "}
+          </Button>
+        </div>
       </div>
     </div>
   );
