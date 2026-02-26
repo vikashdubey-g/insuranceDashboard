@@ -89,14 +89,14 @@ export const FiltersBar = ({
             type="date" 
             value={startDate}
             onChange={(e) => onStartDateChange(e.target.value)}
-            className="w-full sm:w-36 text-xs h-10"
+            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!startDate ? 'text-gray-500 dark:text-gray-400' : 'text-[#2C3635] dark:text-gray-200'}`}
           />
-          <span className="text-gray-400">to</span>
+          <span className="text-[#898F8F] text-[13px] font-medium">to</span>
           <Input 
             type="date" 
             value={endDate}
             onChange={(e) => onEndDateChange(e.target.value)}
-            className="w-full sm:w-36 text-xs h-10"
+            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!endDate ? 'text-gray-500 dark:text-gray-400' : 'text-[#2C3635] dark:text-gray-200'}`}
           />
         </div>
       </div>
