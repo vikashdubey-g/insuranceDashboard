@@ -10,6 +10,8 @@ import { COITable } from './components/dashboard/COITable';
 import { AddCOIModal } from './components/dashboard/AddCOIModal';
 import { EditCOIModal } from './components/dashboard/EditCOIModal';
 import { DeleteCOIModal } from './components/dashboard/DeleteCOIModal';
+import { AskAIModal } from './components/dashboard/AskAIModal';
+import { HelpModal } from './components/dashboard/HelpModal';
 import type { COIRecord, COIStatus } from './types';
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAskAIModalOpen, setIsAskAIModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<COIRecord | null>(null);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -132,6 +136,8 @@ function App() {
       <Header 
         selectedCount={selectedIds.length} 
         onBulkReminderClick={() => alert(`Sending ${selectedIds.length} reminder(s)`)} 
+        onAskAIClick={() => setIsAskAIModalOpen(true)}
+        onHelpClick={() => setIsHelpModalOpen(true)}
       />
       
       <div className="flex-1 overflow-auto p-4 md:p-8 bg-gray-50/20 dark:bg-gray-900">
@@ -203,6 +209,16 @@ function App() {
         }}
         onConfirm={confirmDelete}
         recordName={recordToDelete ? data.find(r => r.id === recordToDelete)?.coiName : undefined}
+      />
+
+      <AskAIModal 
+        isOpen={isAskAIModalOpen} 
+        onClose={() => setIsAskAIModalOpen(false)} 
+      />
+
+      <HelpModal 
+        isOpen={isHelpModalOpen} 
+        onClose={() => setIsHelpModalOpen(false)} 
       />
     </DashboardLayout>
   );
