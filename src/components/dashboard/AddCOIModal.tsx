@@ -128,8 +128,8 @@ export const AddCOIModal = ({ isOpen, onClose, onAdd }: AddCOIModalProps) => {
            </Select>
         </div>
 
-        <div className="pt-4 flex justify-end gap-3 border-t mt-6">
-          <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+        <div className="pt-4 flex justify-end gap-3 border-t border-gray-400 mt-6">
+          <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
           <Button type="submit">Save COI</Button>
         </div>
       </form>

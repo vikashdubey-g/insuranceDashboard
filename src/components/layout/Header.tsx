@@ -2,7 +2,12 @@ import { aiIcon, downArrow, greyDownArrow, helpIcon } from "../../assets";
 import { Button } from "../ui/Button";
 import { ThemeToggle } from "../ThemeToggle";
 
-export const Header = () => {
+interface HeaderProps {
+  selectedCount?: number;
+  onBulkReminderClick?: () => void;
+}
+
+export const Header = ({ selectedCount = 0, onBulkReminderClick }: HeaderProps) => {
   return (
     <header className="flex h-16 md:h-20 items-center justify-between bg-white dark:bg-gray-800 px-4 md:px-8 border-b border-gray-200 dark:border-gray-700 ml-12 md:ml-0">
       {/* Title Area */}
@@ -22,8 +27,12 @@ export const Header = () => {
             variant="secondary"
             endIcon={downArrow}
             startEndIconClassName="w-3 h-3"
+            disabled={selectedCount === 0}
+            onClick={onBulkReminderClick}
           >
-            Send Bulk Reminder
+            {selectedCount > 0 
+              ? `Send ${selectedCount} Reminder${selectedCount > 1 ? 's' : ''}` 
+              : 'Send Bulk Reminder'}
           </Button>
 
           <Button variant="tertiary" startIcon={aiIcon}>

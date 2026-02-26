@@ -122,7 +122,7 @@ export const EditCOIModal = ({ isOpen, onClose, onEdit, initialData }: EditCOIMo
            </Select>
         </div>
 
-        <div className="pt-4 flex justify-end gap-3 border-t dark:border-gray-700 mt-6">
+        <div className="pt-4 flex justify-end gap-3 border-t border-gray-400 dark:border-gray-700 mt-6">
           <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
           <Button type="submit">Save Changes</Button>
         </div>

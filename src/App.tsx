@@ -1,4 +1,7 @@
 import  { useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from './store';
+import { addRecord, updateRecord, deleteRecord, updateStatus } from './store/features/coiSlice';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Header } from './components/layout/Header';
 import { SummaryCards } from './components/dashboard/SummaryCards';
@@ -6,11 +9,13 @@ import { FiltersBar } from './components/dashboard/FiltersBar';
 import { COITable } from './components/dashboard/COITable';
 import { AddCOIModal } from './components/dashboard/AddCOIModal';
 import { EditCOIModal } from './components/dashboard/EditCOIModal';
+import { DeleteCOIModal } from './components/dashboard/DeleteCOIModal';
 import type { COIRecord, COIStatus } from './types';
-import { mockCOIData } from './data/mockData';
 
 function App() {
-  const [data, setData] = useState<COIRecord[]>(mockCOIData);
+  const data = useSelector((state: RootState) => state.coi.data);
+  const dispatch = useDispatch();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<COIStatus | 'All'>('All');
   const [propertyFilter, setPropertyFilter] = useState('all');
@@ -18,7 +23,9 @@ function App() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<COIRecord | null>(null);
+  const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -78,18 +85,11 @@ function App() {
   };
 
   const handleStatusChange = (id: string, newStatus: COIRecord['status']) => {
-    setData(prev => prev.map(record => 
-      record.id === id ? { ...record, status: newStatus } : record
-    ));
+    dispatch(updateStatus({ id, status: newStatus }));
   };
 
   const handleAddRecord = (newRecordData: Omit<COIRecord, 'id' | 'createdAt'>) => {
-    const newRecord: COIRecord = {
-      ...newRecordData,
-      id: Math.random().toString(36).substring(2, 9),
-      createdAt: new Date().toISOString(),
-    };
-    setData(prev => [newRecord, ...prev]);
+    dispatch(addRecord(newRecordData));
   };
 
   const handleEditClick = (record: COIRecord) => {
@@ -98,11 +98,23 @@ function App() {
   };
 
   const handleEditRecord = (updatedRecord: COIRecord) => {
-    setData(prev => prev.map(record => 
-      record.id === updatedRecord.id ? updatedRecord : record
-    ));
+    dispatch(updateRecord(updatedRecord));
     setIsEditModalOpen(false);
     setEditingRecord(null);
+  };
+
+  const handleDeleteRecord = (id: string) => {
+    setRecordToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (recordToDelete) {
+      dispatch(deleteRecord(recordToDelete));
+      setSelectedIds((prev) => prev.filter((id) => id !== recordToDelete));
+      setRecordToDelete(null);
+      setIsDeleteModalOpen(false);
+    }
   };
 
   const handleFilterChange = (filter: COIStatus | 'All') => {
@@ -117,7 +129,10 @@ function App() {
 
   return (
     <DashboardLayout>
-      <Header />
+      <Header 
+        selectedCount={selectedIds.length} 
+        onBulkReminderClick={() => alert(`Sending ${selectedIds.length} reminder(s)`)} 
+      />
       
       <div className="flex-1 overflow-auto p-4 md:p-8 bg-gray-50/20 dark:bg-gray-900">
         <div className="w-full space-y-6">
@@ -158,6 +173,7 @@ function App() {
                 setCurrentPage(1);
               }}
               onEditClick={handleEditClick}
+              onDeleteClick={handleDeleteRecord}
             />
           </div>
         </div>
@@ -177,6 +193,16 @@ function App() {
         }}
         onEdit={handleEditRecord}
         initialData={editingRecord}
+      />
+
+      <DeleteCOIModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setRecordToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        recordName={recordToDelete ? data.find(r => r.id === recordToDelete)?.coiName : undefined}
       />
     </DashboardLayout>
   );

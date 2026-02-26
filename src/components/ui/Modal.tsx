@@ -41,9 +41,9 @@ export const Modal = ({ isOpen, onClose, title, children, className }: ModalProp
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between border-b px-6 py-4">
+        <div className="flex items-center justify-between border-b border-gray-400 px-6 py-4">
           <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full h-8 w-8 text-gray-500">
+          <Button onClick={onClose} variant='tertiary' className="rounded-full h-8 w-8 text-gray-500">
             <X className="h-5 w-5" />
           </Button>
         </div>

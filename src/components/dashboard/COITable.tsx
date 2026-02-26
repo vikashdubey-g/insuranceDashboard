@@ -21,6 +21,7 @@ interface COITableProps {
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onEditClick: (record: COIRecord) => void;
+  onDeleteClick: (id: string) => void;
 }
 
 export const COITable = ({
@@ -35,8 +36,9 @@ export const COITable = ({
   onPageChange,
   onRowsPerPageChange,
   onEditClick,
+  onDeleteClick,
 }: COITableProps) => {
-  const allSelected = data.length > 0 && selectedIds.length === data.length;
+  const allSelected = data.length > 0 && data.every(row => selectedIds.includes(row.id));
 
   const handleGoToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -179,7 +181,10 @@ export const COITable = ({
                       </span>
                     </td>
                     <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-center">
-                      <ActionDropdown onEdit={() => onEditClick(row)} />
+                      <ActionDropdown 
+                        onEdit={() => onEditClick(row)} 
+                        onDelete={() => onDeleteClick(row.id)}
+                      />
                     </td>
                   </tr>
                 );
