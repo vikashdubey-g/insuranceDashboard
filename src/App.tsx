@@ -16,6 +16,8 @@ import { SendReminderModal } from './features/coi/components/SendReminderModal';
 import type { COIRecord, COIStatus } from './types';
 import { useCOIFilters } from './features/coi/hooks/useCOIFilters';
 import { usePagination } from './features/coi/hooks/usePagination';
+import { useSort } from './features/coi/hooks/useSort';
+import { exportToCSV } from './utils/exportCSV';
 
 function App() {
   const data = useSelector((state: RootState) => state.coi.data);
@@ -27,8 +29,15 @@ function App() {
     setSearchQuery,
     setStatusFilter,
     setPropertyFilter,
+    expiryFilter,
     setExpiryFilter,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   } = useCOIFilters(data);
+
+  const { sortKey, sortDir, requestSort, sortedData } = useSort(filteredData, 'expiryDate', 'asc');
 
   const {
     currentPage,
@@ -37,7 +46,7 @@ function App() {
     paginatedData,
     goToPage,
     changeRowsPerPage,
-  } = usePagination(filteredData, 10);
+  } = usePagination(sortedData, 10);
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -135,15 +144,30 @@ function App() {
                 setPropertyFilter(prop);
                 goToPage(1);
               }}
+              expiryFilter={expiryFilter}
               onExpiryFilterChange={(days) => {
                 setExpiryFilter(days);
                 goToPage(1);
               }}
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={(date) => {
+                setStartDate(date);
+                goToPage(1);
+              }}
+              onEndDateChange={(date) => {
+                setEndDate(date);
+                goToPage(1);
+              }}
               onAddClick={() => setIsAddModalOpen(true)}
+              onExportClick={() => exportToCSV(filteredData)}
             />
             
-            <COITable 
+            <COITable  
               data={paginatedData}
+              sortKey={sortKey}
+              sortDir={sortDir}
+              onRequestSort={requestSort}
               selectedIds={selectedIds}
               onSelectAll={handleSelectAll}
               onSelectRow={handleSelectRow}

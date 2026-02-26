@@ -2,6 +2,7 @@ import { Checkbox } from "../../../components/ui/Checkbox";
 import { ArrowUpDown } from "lucide-react";
 import { Select } from "../../../components/ui/Select";
 import type { COIRecord } from "../../../types";
+import type { SortDirection } from "../hooks/useSort";
 import {
   chevronLeft,
   chevronRight,
@@ -11,6 +12,9 @@ import { ActionDropdown } from "./ActionDropdown";
 
 interface COITableProps {
   data: COIRecord[];
+  sortKey: keyof COIRecord | null;
+  sortDir: SortDirection;
+  onRequestSort: (key: keyof COIRecord) => void;
   selectedIds: string[];
   onSelectAll: (checked: boolean) => void;
   onSelectRow: (id: string, checked: boolean) => void;
@@ -26,6 +30,9 @@ interface COITableProps {
 
 export const COITable = ({
   data,
+  sortKey,
+  sortDir,
+  onRequestSort,
   selectedIds,
   onSelectAll,
   onSelectRow,
@@ -39,6 +46,24 @@ export const COITable = ({
   onDeleteClick,
 }: COITableProps) => {
   const allSelected = data.length > 0 && data.every(row => selectedIds.includes(row.id));
+
+  const SortHeader = ({ label, sortValue }: { label: string, sortValue: keyof COIRecord }) => {
+    const isActive = sortKey === sortValue;
+    const isDesc = isActive && sortDir === 'desc';
+    return (
+      <th 
+        className="px-4 py-3 border border-[#DCDEDE] font-medium cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
+        onClick={() => onRequestSort(sortValue)}
+      >
+        <div className="flex items-center justify-between gap-1">
+          {label}
+          <ArrowUpDown 
+            className={`h-3 w-3 transition-all duration-200 ${isActive ? 'opacity-100 text-blue-600 dark:text-blue-400' : 'opacity-0 group-hover:opacity-50'} ${isDesc ? 'rotate-180' : ''}`} 
+          />
+        </div>
+      </th>
+    );
+  };
 
   const handleGoToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -63,30 +88,13 @@ export const COITable = ({
                     onCheckedChange={onSelectAll}
                   />
                 </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  Property
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  Tenant Name
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  Unit
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  COI Name
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  <div className="flex items-center gap-1 cursor-pointer hover:text-gray-900 group">
-                    Expiry Date
-                    <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  Status
-                </th>
-                <th className="px-4 py-3 border border-[#DCDEDE] font-medium">
-                  Reminder Status
-                </th>
+                <SortHeader label="Property" sortValue="property" />
+                <SortHeader label="Tenant Name" sortValue="tenantName" />
+                <SortHeader label="Unit" sortValue="unit" />
+                <SortHeader label="COI Name" sortValue="coiName" />
+                <SortHeader label="Expiry Date" sortValue="expiryDate" />
+                <SortHeader label="Status" sortValue="status" />
+                <SortHeader label="Reminder Status" sortValue="reminderStatus" />
                 <th className="px-4 py-3 border text-center border-[#DCDEDE] dark:border-gray-700 font-medium">
                   Action
                 </th>

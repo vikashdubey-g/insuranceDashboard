@@ -10,16 +10,28 @@ interface FiltersBarProps {
   onSearchChange: (value: string) => void;
   onStatusFilterChange: (status: COIStatus | "All") => void;
   onPropertyFilterChange?: (property: string) => void;
+  expiryFilter?: string;
   onExpiryFilterChange?: (days: string) => void;
+  startDate: string;
+  endDate: string;
+  onStartDateChange: (date: string) => void;
+  onEndDateChange: (date: string) => void;
   onAddClick: () => void;
+  onExportClick: () => void;
 }
 
 export const FiltersBar = ({
   onSearchChange,
   onStatusFilterChange,
   onPropertyFilterChange,
+  expiryFilter = "all",
   onExpiryFilterChange,
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
   onAddClick,
+  onExportClick,
 }: FiltersBarProps) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -65,12 +77,27 @@ export const FiltersBar = ({
           <Select 
             placeholder="Filter by Expiry"
             onChange={(e) => onExpiryFilterChange?.(e.target.value)}
-            defaultValue="all"
+            value={expiryFilter}
           >
             <option value="all">Any Expiry</option>
             <option value="30">Next 30 Days</option>
             <option value="60">Next 60 Days</option>
           </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <Input 
+            type="date" 
+            value={startDate}
+            onChange={(e) => onStartDateChange(e.target.value)}
+            className="w-full sm:w-36 text-xs h-10"
+          />
+          <span className="text-gray-400">to</span>
+          <Input 
+            type="date" 
+            value={endDate}
+            onChange={(e) => onEndDateChange(e.target.value)}
+            className="w-full sm:w-36 text-xs h-10"
+          />
         </div>
       </div>
 
@@ -87,6 +114,9 @@ export const FiltersBar = ({
           <button className="shrink-0 text-gray-500 rounded-full border border-[#E7E9E9] p-1 cursor-pointer">
             <img src={settingIcon} alt="settingIcon" />
           </button>
+          <Button variant="secondary" onClick={onExportClick} className="w-full sm:w-auto justify-center">
+            Export CSV
+          </Button>
           <Button onClick={onAddClick} variant="primary" startIcon={addIcon} startEndIconClassName="w-3 h-3" className="w-full sm:w-auto justify-center" >
             ADD COI{" "}
           </Button>

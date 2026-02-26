@@ -6,6 +6,8 @@ export const useCOIFilters = (initialData: COIRecord[]) => {
   const [statusFilter, setStatusFilter] = useState<COIStatus | 'All'>('All');
   const [propertyFilter, setPropertyFilter] = useState('all');
   const [expiryFilter, setExpiryFilter] = useState('all');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const filteredData = useMemo(() => {
     return initialData.filter(record => {
@@ -24,9 +26,21 @@ export const useCOIFilters = (initialData: COIRecord[]) => {
         matchesExpiry = daysDiff >= 0 && daysDiff <= parseInt(expiryFilter);
       }
 
-      return matchesSearch && matchesStatus && matchesProperty && matchesExpiry;
+      let matchesDateRange = true;
+      if (startDate || endDate) {
+        const rowDate = new Date(record.expiryDate).getTime();
+        
+        // Strip time from start and end dates for reliable comparison
+        const filterStart = startDate ? new Date(startDate).getTime() : -Infinity;
+        // Make the end date inclusive until the very end of the day
+        const filterEnd = endDate ? new Date(endDate).getTime() + (24 * 60 * 60 * 1000) - 1 : Infinity;
+
+        matchesDateRange = rowDate >= filterStart && rowDate <= filterEnd;
+      }
+
+      return matchesSearch && matchesStatus && matchesProperty && matchesExpiry && matchesDateRange;
     });
-  }, [initialData, searchQuery, statusFilter, propertyFilter, expiryFilter]);
+  }, [initialData, searchQuery, statusFilter, propertyFilter, expiryFilter, startDate, endDate]);
 
   const stats = useMemo(() => {
     return {
@@ -48,5 +62,9 @@ export const useCOIFilters = (initialData: COIRecord[]) => {
     setPropertyFilter,
     expiryFilter,
     setExpiryFilter,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   };
 };
