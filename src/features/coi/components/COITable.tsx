@@ -1,12 +1,12 @@
-import { Checkbox } from "../ui/Checkbox";
+import { Checkbox } from "../../../components/ui/Checkbox";
 import { ArrowUpDown } from "lucide-react";
-import { Select } from "../ui/Select";
-import type { COIRecord } from "../../types";
+import { Select } from "../../../components/ui/Select";
+import type { COIRecord } from "../../../types";
 import {
   chevronLeft,
   chevronRight,
   editPencilIcon,
-} from "../../assets";
+} from "../../../assets";
 import { ActionDropdown } from "./ActionDropdown";
 
 interface COITableProps {

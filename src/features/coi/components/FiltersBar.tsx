@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Input } from "../ui/Input";
-import { Select } from "../ui/Select";
-import { Button } from "../ui/Button";
+import { Input } from "../../../components/ui/Input";
+import { Select } from "../../../components/ui/Select";
+import { Button } from "../../../components/ui/Button";
 import { Search } from "lucide-react";
-import type { COIStatus } from "../../types";
-import { addIcon, settingIcon } from "../../assets";
+import type { COIStatus } from "../../../types";
+import { addIcon, settingIcon } from "../../../assets";
 
 interface FiltersBarProps {
   onSearchChange: (value: string) => void;

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { COIRecord, COIStatus } from '../../types';
-import { mockCOIData } from '../../data/mockData';
+import type { COIRecord, COIStatus } from '../../../types';
+import { mockCOIData } from '../../../data/mockData';
 
 interface COIState {
   data: COIRecord[];

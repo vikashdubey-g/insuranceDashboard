@@ -1,28 +1,44 @@
-import  { useState, useMemo } from 'react';
+import  { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from './store';
-import { addRecord, updateRecord, deleteRecord, updateStatus } from './store/features/coiSlice';
+import { addRecord, updateRecord, deleteRecord, updateStatus } from './features/coi/store/coiSlice';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Header } from './components/layout/Header';
-import { SummaryCards } from './components/dashboard/SummaryCards';
-import { FiltersBar } from './components/dashboard/FiltersBar';
-import { COITable } from './components/dashboard/COITable';
-import { AddCOIModal } from './components/dashboard/AddCOIModal';
-import { EditCOIModal } from './components/dashboard/EditCOIModal';
-import { DeleteCOIModal } from './components/dashboard/DeleteCOIModal';
-import { AskAIModal } from './components/dashboard/AskAIModal';
-import { HelpModal } from './components/dashboard/HelpModal';
-import { SendReminderModal } from './components/dashboard/SendReminderModal';
+import { SummaryCards } from './features/coi/components/SummaryCards';
+import { FiltersBar } from './features/coi/components/FiltersBar';
+import { COITable } from './features/coi/components/COITable';
+import { AddCOIModal } from './features/coi/components/AddCOIModal';
+import { EditCOIModal } from './features/coi/components/EditCOIModal';
+import { DeleteCOIModal } from './features/coi/components/DeleteCOIModal';
+import { AskAIModal } from './features/coi/components/AskAIModal';
+import { HelpModal } from './features/coi/components/HelpModal';
+import { SendReminderModal } from './features/coi/components/SendReminderModal';
 import type { COIRecord, COIStatus } from './types';
+import { useCOIFilters } from './features/coi/hooks/useCOIFilters';
+import { usePagination } from './features/coi/hooks/usePagination';
 
 function App() {
   const data = useSelector((state: RootState) => state.coi.data);
   const dispatch = useDispatch();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<COIStatus | 'All'>('All');
-  const [propertyFilter, setPropertyFilter] = useState('all');
-  const [expiryFilter, setExpiryFilter] = useState('all');
+  const {
+    filteredData,
+    stats,
+    setSearchQuery,
+    setStatusFilter,
+    setPropertyFilter,
+    setExpiryFilter,
+  } = useCOIFilters(data);
+
+  const {
+    currentPage,
+    rowsPerPage,
+    totalPages,
+    paginatedData,
+    goToPage,
+    changeRowsPerPage,
+  } = usePagination(filteredData, 10);
+
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,46 +48,6 @@ function App() {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<COIRecord | null>(null);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  // Derived state for summary cards
-  const stats = useMemo(() => {
-    return {
-      total: data.length, // Let's pretend 512 total in a real app, but use data.length here
-      accepted: data.filter(d => d.status === 'Active').length,
-      rejected: data.filter(d => d.status === 'Rejected').length,
-      expiring: data.filter(d => d.status === 'Expiring Soon').length,
-    };
-  }, [data]);
-
-  // Filtering logic
-  const filteredData = useMemo(() => {
-    return data.filter(record => {
-      const matchesSearch = 
-        record.tenantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.property.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        record.unit.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesStatus = statusFilter === 'All' || record.status === statusFilter;
-
-      const matchesProperty = propertyFilter === 'all' || record.property.toLowerCase().includes(propertyFilter.toLowerCase());
-
-      let matchesExpiry = true;
-      if (expiryFilter !== 'all') {
-        const daysDiff = (new Date(record.expiryDate).getTime() - Date.now()) / (1000 * 3600 * 24);
-        matchesExpiry = daysDiff >= 0 && daysDiff <= parseInt(expiryFilter);
-      }
-
-      return matchesSearch && matchesStatus && matchesProperty && matchesExpiry;
-    });
-  }, [data, searchQuery, statusFilter, propertyFilter, expiryFilter]);
-
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-  const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * rowsPerPage;
-    return filteredData.slice(start, start + rowsPerPage);
-  }, [filteredData, currentPage, rowsPerPage]);
 
   // Table selection handlers
   const handleSelectAll = (checked: boolean) => {
@@ -125,12 +101,12 @@ function App() {
 
   const handleFilterChange = (filter: COIStatus | 'All') => {
     setStatusFilter(filter);
-    setCurrentPage(1); // Reset page on filter
+    goToPage(1); // Reset page on filter
   };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setCurrentPage(1); // Reset page on search
+    goToPage(1); // Reset page on search
   };
 
   return (
@@ -157,11 +133,11 @@ function App() {
               onStatusFilterChange={handleFilterChange}
               onPropertyFilterChange={(prop) => {
                 setPropertyFilter(prop);
-                setCurrentPage(1);
+                goToPage(1);
               }}
               onExpiryFilterChange={(days) => {
                 setExpiryFilter(days);
-                setCurrentPage(1);
+                goToPage(1);
               }}
               onAddClick={() => setIsAddModalOpen(true)}
             />
@@ -175,11 +151,8 @@ function App() {
               currentPage={currentPage}
               totalPages={totalPages}
               rowsPerPage={rowsPerPage}
-              onPageChange={setCurrentPage}
-              onRowsPerPageChange={(rows) => {
-                setRowsPerPage(rows);
-                setCurrentPage(1);
-              }}
+              onPageChange={goToPage}
+              onRowsPerPageChange={changeRowsPerPage}
               onEditClick={handleEditClick}
               onDeleteClick={handleDeleteRecord}
             />
@@ -210,7 +183,7 @@ function App() {
           setRecordToDelete(null);
         }}
         onConfirm={confirmDelete}
-        recordName={recordToDelete ? data.find(r => r.id === recordToDelete)?.coiName : undefined}
+        recordName={recordToDelete ? data.find((r: COIRecord) => r.id === recordToDelete)?.coiName : undefined}
       />
 
       <AskAIModal 

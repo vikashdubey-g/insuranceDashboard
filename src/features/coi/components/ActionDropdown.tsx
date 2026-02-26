@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { threeDotIcon, editPencilIcon } from "../../assets";
+import { threeDotIcon, editPencilIcon } from "../../../assets";
 import { Trash2 } from "lucide-react"; // Import a delete icon from lucide-react
 
 interface ActionDropdownProps {

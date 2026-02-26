@@ -3,7 +3,7 @@ import {
   coiProcessedIcon,
   expiryIcon,
   rejectedIcon,
-} from "../../assets";
+} from "../../../assets";
 
 interface SummaryCardsProps {
   total: number;

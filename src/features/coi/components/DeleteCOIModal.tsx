@@ -1,5 +1,5 @@
-import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
+import { Modal } from '../../../components/ui/Modal';
+import { Button } from '../../../components/ui/Button';
 
 interface DeleteCOIModalProps {
   isOpen: boolean;
