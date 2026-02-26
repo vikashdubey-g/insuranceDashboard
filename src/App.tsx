@@ -12,6 +12,7 @@ import { EditCOIModal } from './components/dashboard/EditCOIModal';
 import { DeleteCOIModal } from './components/dashboard/DeleteCOIModal';
 import { AskAIModal } from './components/dashboard/AskAIModal';
 import { HelpModal } from './components/dashboard/HelpModal';
+import { SendReminderModal } from './components/dashboard/SendReminderModal';
 import type { COIRecord, COIStatus } from './types';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
   const [isAskAIModalOpen, setIsAskAIModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<COIRecord | null>(null);
@@ -135,7 +137,7 @@ function App() {
     <DashboardLayout>
       <Header 
         selectedCount={selectedIds.length} 
-        onBulkReminderClick={() => alert(`Sending ${selectedIds.length} reminder(s)`)} 
+        onBulkReminderClick={() => setIsReminderModalOpen(true)} 
         onAskAIClick={() => setIsAskAIModalOpen(true)}
         onHelpClick={() => setIsHelpModalOpen(true)}
       />
@@ -219,6 +221,17 @@ function App() {
       <HelpModal 
         isOpen={isHelpModalOpen} 
         onClose={() => setIsHelpModalOpen(false)} 
+      />
+
+      <SendReminderModal
+        isOpen={isReminderModalOpen}
+        onClose={() => setIsReminderModalOpen(false)}
+        onConfirm={() => {
+          setIsReminderModalOpen(false);
+          // Actual bulk reminder logic would go here
+          setSelectedIds([]);
+        }}
+        selectedCount={selectedIds.length}
       />
     </DashboardLayout>
   );
