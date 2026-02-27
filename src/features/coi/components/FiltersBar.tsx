@@ -43,7 +43,8 @@ export const FiltersBar = ({
     return () => {
       clearTimeout(handler);
     };
-  }, [searchValue, onSearchChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
 
   return (
     <div className="flex flex-col xl:flex-row items-center justify-between gap-4 mb-4">
