@@ -11,12 +11,12 @@ const Settings = () => {
           
           <div className="space-y-4 max-w-md">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
-              <input type="text" className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100" defaultValue="Acme Corp" />
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
+              <input id="companyName" type="text" className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100" defaultValue="Acme Corp" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Notifications</label>
-              <select className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100">
+              <label htmlFor="emailNotif" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Notifications</label>
+              <select id="emailNotif" className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-gray-100">
                 <option>All events</option>
                 <option>Only critical</option>
                 <option>Disabled</option>
