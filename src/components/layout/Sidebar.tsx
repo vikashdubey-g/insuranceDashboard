@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { cn } from "../../lib/utils";
 
 import {
@@ -13,10 +14,10 @@ import {
 import { Button } from "../ui/Button";
 
 const navigation = [
-  { name: "Contract Vault", href: "#", icon: contactVault, current: false },
-  { name: "COI Dashboard", href: "#", icon: coiDashboard, current: true },
-  { name: "Analysis Results", href: "#", icon: analysisResult, current: false },
-  { name: "Setting", href: "#", icon: settingIcon, current: false },
+  { name: "Contract Vault", href: "/vault", icon: contactVault },
+  { name: "COI Dashboard", href: "/", icon: coiDashboard },
+  { name: "Analysis Results", href: "/analysis", icon: analysisResult },
+  { name: "Setting", href: "/settings", icon: settingIcon },
 ];
 
 export const Sidebar = () => {
@@ -82,11 +83,11 @@ export const Sidebar = () => {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-2">
         {navigation.map((item) => (
-          <a
+          <NavLink
             key={item.name}
-            href={item.href}
-            className={cn(
-              item.current
+            to={item.href}
+            className={({ isActive }) => cn(
+              isActive
                 ? "bg-blue-50 text-blue-600 font-medium dark:bg-blue-900/40 dark:text-blue-300"
                 : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-100",
               "group flex items-center rounded-md px-3 py-2 text-sm transition-colors",
@@ -103,7 +104,7 @@ export const Sidebar = () => {
             >
               {item.name}
             </span>
-          </a>
+          </NavLink>
         ))}
       </nav>
     </div>
