@@ -3,11 +3,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Select } from "../../../components/ui/Select";
 import type { COIRecord } from "../../../types";
 import type { SortDirection } from "../hooks/useSort";
-import {
-  chevronLeft,
-  chevronRight,
-  editPencilIcon,
-} from "../../../assets";
+import { chevronLeft, chevronRight, editPencilIcon } from "../../../assets";
 import { ActionDropdown } from "./ActionDropdown";
 
 interface COITableProps {
@@ -45,20 +41,27 @@ export const COITable = ({
   onEditClick,
   onDeleteClick,
 }: COITableProps) => {
-  const allSelected = data.length > 0 && data.every(row => selectedIds.includes(row.id));
+  const allSelected =
+    data.length > 0 && data.every((row) => selectedIds.includes(row.id));
 
-  const SortHeader = ({ label, sortValue }: { label: string, sortValue: keyof COIRecord }) => {
+  const SortHeader = ({
+    label,
+    sortValue,
+  }: {
+    label: string;
+    sortValue: keyof COIRecord;
+  }) => {
     const isActive = sortKey === sortValue;
-    const isDesc = isActive && sortDir === 'desc';
+    const isDesc = isActive && sortDir === "desc";
     return (
-      <th 
+      <th
         className="px-4 py-3 border border-[#DCDEDE] font-medium cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
         onClick={() => onRequestSort(sortValue)}
       >
         <div className="flex items-center justify-between gap-1">
           {label}
-          <ArrowUpDown 
-            className={`h-3 w-3 transition-all duration-200 ${isActive ? 'opacity-100 text-blue-600 dark:text-blue-400' : 'opacity-0 group-hover:opacity-50'} ${isDesc ? 'rotate-180' : ''}`} 
+          <ArrowUpDown
+            className={`h-3 w-3 transition-all duration-200 ${isActive ? "opacity-100 text-blue-600 dark:text-blue-400" : "opacity-0 group-hover:opacity-50"} ${isDesc ? "rotate-180" : ""}`}
           />
         </div>
       </th>
@@ -94,7 +97,10 @@ export const COITable = ({
                 <SortHeader label="COI Name" sortValue="coiName" />
                 <SortHeader label="Expiry Date" sortValue="expiryDate" />
                 <SortHeader label="Status" sortValue="status" />
-                <SortHeader label="Reminder Status" sortValue="reminderStatus" />
+                <SortHeader
+                  label="Reminder Status"
+                  sortValue="reminderStatus"
+                />
                 <th className="px-4 py-3 border text-center border-[#DCDEDE] dark:border-gray-700 font-medium">
                   Action
                 </th>
@@ -134,7 +140,7 @@ export const COITable = ({
                       {row.tenantName}
                     </td>
                     <td className="px-4 py-3 border border-gray-200 dark:border-gray-700">
-                      {row.unit}
+                      {row.unit.replace(/^Unit\s+/i, "")}
                     </td>
                     <td
                       className="px-4 py-3 border border-gray-200 dark:border-gray-700 truncate max-w-37.5"
@@ -145,11 +151,15 @@ export const COITable = ({
                     <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 whitespace-nowrap">
                       <div className="flex items-center justify-between gap-2">
                         {dateContent}
-                        <button 
+                        <button
                           className="text-gray-400 cursor-pointer hover:text-blue-500 transition-opacity"
                           onClick={() => onEditClick(row)}
                         >
-                          <img src={editPencilIcon} alt="editPencilIcon" className="w-4 h-4 dark:invert opacity-70" />
+                          <img
+                            src={editPencilIcon}
+                            alt="editPencilIcon"
+                            className="w-4 h-4 dark:invert opacity-70"
+                          />
                         </button>
                       </div>
                     </td>
@@ -189,8 +199,8 @@ export const COITable = ({
                       </span>
                     </td>
                     <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-center">
-                      <ActionDropdown 
-                        onEdit={() => onEditClick(row)} 
+                      <ActionDropdown
+                        onEdit={() => onEditClick(row)}
                         onDelete={() => onDeleteClick(row.id)}
                       />
                     </td>
@@ -235,7 +245,11 @@ export const COITable = ({
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
             >
-              <img src={chevronRight} alt="chevronRight" className="dark:invert opacity-70" />
+              <img
+                src={chevronRight}
+                alt="chevronRight"
+                className="dark:invert opacity-70"
+              />
             </button>
             <span className="font-medium text-[#898F8F] dark:text-gray-300">
               Page {currentPage} of {totalPages}
@@ -245,7 +259,11 @@ export const COITable = ({
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage >= totalPages}
             >
-              <img src={chevronLeft} alt="chevronLeft" className="dark:invert opacity-70" />
+              <img
+                src={chevronLeft}
+                alt="chevronLeft"
+                className="dark:invert opacity-70"
+              />
             </button>
           </div>
 
