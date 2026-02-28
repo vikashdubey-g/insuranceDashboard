@@ -56,8 +56,11 @@ export const FiltersBar = ({
             defaultValue="all"
           >
             <option value="all">All Properties</option>
-            <option value="maple">Maplewood...</option>
+            <option value="maple">Maplewood</option>
             <option value="oak">Oak Tree Tower</option>
+            <option value="windy">Windy Ridge</option>
+            <option value="meadowbrook">Meadowbrook</option>
+            <option value="huron">Huron Heights</option>
           </Select>
         </div>
         <div className="w-full sm:w-36 shrink-0">
