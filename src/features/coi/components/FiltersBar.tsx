@@ -47,10 +47,10 @@ export const FiltersBar = ({
   }, [searchValue]);
 
   return (
-    <div className="flex flex-col xl:flex-row items-center justify-between gap-4 mb-4">
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto p-1 -m-1">
+    <div className="flex flex-col xl:flex-row flex-wrap items-center justify-between gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full xl:w-auto p-1 -m-1">
         <div className="w-full sm:w-40 shrink-0">
-          <Select 
+          <Select
             placeholder="All Properties"
             onChange={(e) => onPropertyFilterChange?.(e.target.value)}
             defaultValue="all"
@@ -75,7 +75,7 @@ export const FiltersBar = ({
           </Select>
         </div>
         <div className="w-full sm:w-40 shrink-0">
-          <Select 
+          <Select
             placeholder="Filter by Expiry"
             onChange={(e) => onExpiryFilterChange?.(e.target.value)}
             value={expiryFilter}
@@ -86,23 +86,23 @@ export const FiltersBar = ({
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <Input 
-            type="date" 
+          <Input
+            type="date"
             value={startDate}
             onChange={(e) => onStartDateChange(e.target.value)}
-            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!startDate ? 'text-gray-500 dark:text-gray-400' : 'text-[#2C3635] dark:text-gray-200'}`}
+            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!startDate ? "text-gray-500 dark:text-gray-400" : "text-[#2C3635] dark:text-gray-200"}`}
           />
           <span className="text-[#898F8F] text-[13px] font-medium">to</span>
-          <Input 
-            type="date" 
+          <Input
+            type="date"
             value={endDate}
             onChange={(e) => onEndDateChange(e.target.value)}
-            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!endDate ? 'text-gray-500 dark:text-gray-400' : 'text-[#2C3635] dark:text-gray-200'}`}
+            className={`w-full sm:w-[135px] text-[13px] h-9 px-2.5 rounded-lg border-[#DCDEDE] ${!endDate ? "text-gray-500 dark:text-gray-400" : "text-[#2C3635] dark:text-gray-200"}`}
           />
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 w-full xl:w-auto">
         <div className="w-full xl:w-80">
           <Input
             icon={<Search className="h-4 w-4" />}
@@ -115,10 +115,20 @@ export const FiltersBar = ({
           <button className="shrink-0 text-gray-500 rounded-full border border-[#E7E9E9] p-1 cursor-pointer">
             <img src={settingIcon} alt="settingIcon" />
           </button>
-          <Button variant="secondary" onClick={onExportClick} className="w-full sm:w-auto justify-center">
+          <Button
+            variant="secondary"
+            onClick={onExportClick}
+            className="w-full sm:w-auto justify-center"
+          >
             Export CSV
           </Button>
-          <Button onClick={onAddClick} variant="primary" startIcon={addIcon} startEndIconClassName="w-3 h-3" className="w-full sm:w-auto justify-center" >
+          <Button
+            onClick={onAddClick}
+            variant="primary"
+            startIcon={addIcon}
+            startEndIconClassName="w-3 h-3"
+            className="w-full sm:w-auto justify-center"
+          >
             ADD COI{" "}
           </Button>
         </div>
